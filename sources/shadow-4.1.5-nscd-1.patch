@@ -1,0 +1,24 @@
+Submitted By:            Matt Burgess <matthew_at_linuxfromscratch_dot_org>
+Date:                    2012-01-14
+Initial Package Version: 4.1.5
+Upstream Status:         From upstream
+Origin:                  Upstream
+Description:             Prevents errors being printed in the event that nscd is installed but not running, which is the case
+                         in a by-the-book LFS system.
+
+diff -Naur shadow-4.1.5.orig/lib/nscd.c shadow-4.1.5/lib/nscd.c
+--- shadow-4.1.5.orig/lib/nscd.c	2011-10-16 17:05:30.000000000 +0000
++++ shadow-4.1.5/lib/nscd.c	2012-02-14 20:19:51.990474572 +0000
+@@ -39,8 +39,11 @@
+ 		/* nscd is not installed, or it is installed but uses an
+ 		   interpreter that is missing.  Probably the former. */
+ 		return 0;
++	} else if (code == 1) {
++		/* nscd is installed, but it isn't active. */
++		return 0;
+ 	} else if (code != 0) {
+-		(void) fprintf (stderr, _("%s: nscd exited with status %d"),
++		(void) fprintf (stderr, _("%s: nscd exited with status %d\n"),
+ 		                Prog, code);
+ 		(void) fprintf (stderr, _(MSG_NSCD_FLUSH_CACHE_FAILED), Prog);
+ 		return -1;
