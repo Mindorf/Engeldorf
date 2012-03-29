@@ -1,0 +1,1 @@
+cmd_dest/include/xen/.install := perl scripts/headers_install.pl /mnt/engeldorf/sources/linux-3.2.6/include/xen dest/include/xen x86 evtchn.h privcmd.h; perl scripts/headers_install.pl /mnt/engeldorf/sources/linux-3.2.6/include/xen dest/include/xen x86 ; for F in ; do echo "\#include <asm-generic/$$F>" > dest/include/xen/$$F; done; touch dest/include/xen/.install
